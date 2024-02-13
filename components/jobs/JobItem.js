@@ -1,67 +1,75 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { GlobalStyles } from '../../constants/styles';
-import { getFormattedDate } from '../../util/date';
+import React from 'react';
+import { Pressable, View, Text, StyleSheet } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
+import HTML from 'react-native-render-html';
 
-function JobItem({ description, amount, date }) {
+function JobItem({ title, salary, male_female, job_description }) {
     return (
-        <Pressable>
-            <View style={styles.expenseItem}>
-                <View>
-                    <Text style={[styles.textBase, styles.description]}>
-                        {description}
-                    </Text>
-                    <Text style={styles.textBase}>
-                        {getFormattedDate(date)}
-                    </Text>
+        <Pressable
+            style={styles.pressable}
+            onPress={() => {
+                alert(`Item ${title} pressed`);
+            }}
+        >
+            <View style={styles.card}>
+                <View style={styles.cardBody}>
+                    <Text style={styles.cardTitle}>{title}</Text>
+                    <HTML source={{ html: job_description }} style={styles.cardDescription} />
+                    <Text style={styles.cardText}>{male_female}</Text>
                 </View>
-                <View style={styles.amountContainer}>
-                    <Text style={styles.amount}>
-                        {amount.toFixed(2)}
-                    </Text>
+                <View style={styles.cardFooter}>
+                    <Text style={styles.cardAmount}>{salary}</Text>
+                    <FontAwesome name="shopping-cart" size={24} color="black" />
                 </View>
             </View>
         </Pressable>
     );
 }
 
-export default JobItem;
-
 const styles = StyleSheet.create({
-    expenseItem: {
+    pressable: {
+        overflow: 'hidden',
+        borderRadius: 8,
+        elevation: 5,
+        backgroundColor: '#fff',
+        margin: 10,
+    },
+    card: {
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        borderRadius: 8,
+        overflow: 'hidden',
+        backgroundColor: '#fff',
+    },
+    cardBody: {
         padding: 10,
-        marginVertical: 8,
-        backgroundColor: GlobalStyles.colors.info,
+    },
+    cardTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 5,
+    },
+    cardDescription: {
+        color: '#333',
+        marginBottom: 10,
+    },
+    cardText: {
+        color: '#666',
+        marginBottom: 10,
+    },
+    cardFooter: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        borderRadius: 6,
-        elevation: 3,
-        shadowColor: GlobalStyles.colors.gray,
-        shadowRadius: 4,
-        shadowOffset: { width: 1, height: 1 },
-        shadowOpacity: 0.4,
-    },
-
-    textBase: {
-        color: GlobalStyles.colors.primary,
-    },
-
-    description: {
-        fontSize: 16,
-        marginBottom: 4,
-        fontWeight: 'bold',
-    },
-
-    amountContainer: {
-        paddingHorizontal: 12,
-        paddingVertical: 4,
-        backgroundColor: 'white',
-        justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 4,
-        minWidth: 90,
+        padding: 10,
+        borderTopWidth: 1,
+        borderTopColor: '#eee',
     },
-
-    amount: {
-        color: GlobalStyles.colors.primary,
-    }
+    cardAmount: {
+        fontSize: 16,
+        color: '#007bff',
+        marginRight: 10,
+    },
 });
+
+export default JobItem;

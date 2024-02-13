@@ -1,6 +1,8 @@
 import { StyleSheet, View } from 'react-native';
 import JobList from './JobList';
 import { GlobalStyles } from '../../constants/styles';
+import React, { useState, useEffect } from 'react';
+
 
 
 const DUMMY_EXPENSES = [
@@ -69,10 +71,20 @@ const DUMMY_EXPENSES = [
     },
 ];
 
-function JobOutput({ expenses, expensePeriod }) {
+function JobOutput({ expensePeriod }) {
+
+    const [jobs, setJobs] = useState([]);
+
+    useEffect(() => {
+        fetch('https://www.acquireoverseasygn.com/api/job')
+            .then(response => response.json())
+            .then(data => setJobs(data.data))
+            .catch(error => console.error('Error fetching data:', error));
+    }, []);
+
     return (
         <View style={styles.container}>
-            <JobList jobs={DUMMY_EXPENSES} />
+            <JobList jobs={jobs} />
         </View>
     );
 }
